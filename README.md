@@ -2,6 +2,8 @@
 
 Northstar is a learning-focused platform for uploading data, connecting PostgreSQL databases, inspecting schemas, and asking questions in plain English. The backend is built with Node.js, Express, PostgreSQL, and JavaScript ES modules. The frontend is React, JavaScript, and CSS.
 
+**Live demo:** [northstar-frontend-six.vercel.app](https://northstar-frontend-six.vercel.app)
+
 ## What it can do
 
 - Create accounts and sign in with email and password.
