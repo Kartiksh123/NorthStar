@@ -27,7 +27,7 @@ The server creates its required tables at startup. The `.env` file is ignored by
 - `controllers/` validates HTTP input and chooses response status codes.
 - `services/` contains the work for authentication, parsing files, managing connections, and generating queries.
 - `models/` contains PostgreSQL statements for platform users, datasets, and saved database connections.
-- `middleware/` verifies JWTs and formats upload errors.
+- `middleware/` verifies JWTs, handles CORS, and formats upload errors.
 - `config/` contains the platform database pool and upload limits.
 - `utils/` contains schema helpers, credential encryption, and SQL validation.
 
@@ -75,3 +75,5 @@ The response contains the SQL, up to 500 result rows, their count, and a natural
 - Dataset relationships are name-based candidates; PostgreSQL foreign keys are not added to uploaded tables. Existing-database foreign keys are read from PostgreSQL metadata.
 
 Gemini receives the question and schema to generate SQL. The explanation request also includes up to 30 result rows, so configure Gemini access in line with your data-handling requirements.
+
+For production, set `CORS_ORIGINS` to a comma-separated list of exact frontend origins, such as your Vercel production URL. Do not include a trailing slash. Local Vite origins are allowed by default.

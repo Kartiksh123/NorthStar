@@ -4,8 +4,11 @@ import datasetRoutes from './routes/datasetRoutes.js';
 import connectionRoutes from './routes/connectionRoutes.js';
 import queryRoutes from './routes/queryRoutes.js';
 import { errorHandler } from './middleware/errorMiddleware.js';
+import { corsMiddleware } from './middleware/corsMiddleware.js';
 
 const app = express();
+
+app.use(corsMiddleware);
 
 // Parse incoming JSON request bodies so controllers can read req.body.
 app.use(express.json());

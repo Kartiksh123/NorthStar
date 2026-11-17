@@ -93,6 +93,7 @@ Open the local URL printed by Vite, usually `http://localhost:5173`. During deve
 | `CONNECTION_ENCRYPTION_KEY` | Base64-encoded 32-byte key for encrypting saved PostgreSQL passwords |
 | `GEMINI_API_KEY` | Server-side Gemini API key; never put this in frontend code |
 | `GEMINI_MODEL` | Gemini model name; defaults to `gemini-3.5-flash-lite` |
+| `CORS_ORIGINS` | Comma-separated frontend origins allowed to call the backend; Render needs the Vercel origin |
 | `VITE_API_URL` | Optional frontend API base URL; the local Vite proxy is used by default |
 
 ## API overview
@@ -160,3 +161,23 @@ The response includes the SQL, result rows, row count, and a natural-language ex
 - Uploaded rows are stored in generated PostgreSQL tables; dataset ownership and schema metadata are in `datasets`.
 - External database connection passwords are encrypted before they are stored in `database_connections`.
 - The frontend stores the login JWT in browser `localStorage` under `northstar_token`.
+
+## Deploy to Vercel and Render
+
+The repository includes [render.yaml](./render.yaml), which defines a Render Node web service and PostgreSQL database. It connects the service to PostgreSQL through Render's connection string, generates JWT and database-encryption secrets, and prompts for the Gemini API key and CORS origins. Review the Render resource plans before applying the Blueprint because provisioning a paid plan can incur charges.
+
+### Render backend and database
+
+1. Sign in to Render and create a new Blueprint from this GitHub repository's `main` branch.
+2. Render reads `render.yaml` and configures `northstar-api` with `Backend` as its root directory, and provisions `northstar-db`.
+3. Provide `GEMINI_API_KEY` and `CORS_ORIGINS` when prompted. Set `CORS_ORIGINS` to the exact Vercel origin, for example `https://your-project.vercel.app`, with no trailing slash. You can update it in the Render service environment after the Vercel site is created.
+4. After the service deploys, note its public URL, such as `https://northstar-api.onrender.com`. The health endpoint is `/health`.
+
+### Vercel frontend
+
+1. Import the same GitHub repository into Vercel.
+2. Set the project Root Directory to `frontend`. Use the Vite framework preset, build command `npm run build`, and output directory `dist`.
+3. Add `VITE_API_URL` with the Render service URL followed by `/api`, for example `https://northstar-api.onrender.com/api`.
+4. Deploy or redeploy the Vercel project. Add its exact production origin to Render's `CORS_ORIGINS` list. Add each Vercel preview or custom-domain origin that should also be allowed.
+
+Never add `GEMINI_API_KEY`, `JWT_SECRET`, or `CONNECTION_ENCRYPTION_KEY` to Vercel; they belong only in the backend environment. Render generates the two backend secrets in the Blueprint, and the Gemini key is supplied privately through Render.
