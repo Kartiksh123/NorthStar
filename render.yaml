@@ -2,6 +2,7 @@ services:
   - type: web
     name: northstar-api
     runtime: node
+    plan: free
     region: oregon
     rootDir: Backend
     buildCommand: npm ci
@@ -27,6 +28,7 @@ services:
 
 databases:
   - name: northstar-db
+    plan: free
     databaseName: northstar
     user: northstar
     region: oregon

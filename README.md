@@ -164,7 +164,7 @@ The response includes the SQL, result rows, row count, and a natural-language ex
 
 ## Deploy to Vercel and Render
 
-The repository includes [render.yaml](./render.yaml), which defines a Render Node web service and PostgreSQL database. It connects the service to PostgreSQL through Render's connection string, generates JWT and database-encryption secrets, and prompts for the Gemini API key and CORS origins. Review the Render resource plans before applying the Blueprint because provisioning a paid plan can incur charges.
+The repository includes [render.yaml](./render.yaml), which defines a free Render Node web service and PostgreSQL database. It connects the service to PostgreSQL through Render's connection string, generates JWT and database-encryption secrets, and prompts for the Gemini API key and CORS origins. Render's free API service sleeps after 15 minutes idle, and its free PostgreSQL database expires after 30 days; use paid plans for persistent production data.
 
 ### Render backend and database
 
